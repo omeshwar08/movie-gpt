@@ -1,11 +1,65 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidData } from "../utility/validate.jsx";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utility/firebase.jsx";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const toggleSignInForm = () => {
     setIsSignIn(!isSignIn);
   };
+  const handleButtonClick = () => {
+    const validData = checkValidData(
+      email.current.value,
+      password.current.value
+    );
+    setErrorMessage(validData);
+    if (!isSignIn && name.current.value.length === 0) {
+      setErrorMessage("Name is not valid");
+    }
+    if (errorMessage) return;
+
+    if (!isSignIn) {
+      //Sign Up Logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "---" + errorMessage);
+        });
+    } else {
+      // Sign In Logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "---" + errorMessage);
+        });
+    }
+  };
+
   return (
     <div className="relative h-screen w-screen">
       <Header />
@@ -21,6 +75,7 @@ const Login = () => {
 
       {/* Sign In Form */}
       <form
+        onSubmit={(e) => e.preventDefault()}
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                       w-3/12 bg-black opacity-80 text-white p-12 rounded-lg shadow-lg flex flex-col items-center"
       >
@@ -30,25 +85,32 @@ const Login = () => {
 
         {!isSignIn && (
           <input
-            type="email"
+            ref={name}
+            type="text"
             placeholder="Name"
             className="p-3 mb-4 w-full bg-gray-200 text-black rounded"
           />
         )}
 
         <input
-          type="email"
+          ref={email}
           placeholder="Email Address"
           className="p-3 mb-4 w-full bg-gray-200 text-black rounded"
         />
 
         <input
+          ref={password}
           type="password"
           placeholder="Password"
           className="p-3 mb-4 w-full bg-gray-200 text-black rounded"
         />
 
-        <button className="p-3 bg-red-700 hover:bg-red-800 w-full rounded font-semibold cursor-pointer">
+        <p className="font-bold text-lg text-red-600 pb-2">{errorMessage}</p>
+
+        <button
+          className="p-3 bg-red-700 hover:bg-red-800 w-full rounded font-semibold cursor-pointer"
+          onClick={handleButtonClick}
+        >
           {isSignIn ? "Sign In" : "Sign Up"}
         </button>
 
