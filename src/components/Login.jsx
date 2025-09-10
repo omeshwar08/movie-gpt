@@ -1,17 +1,24 @@
+/* eslint-disable no-unused-vars */
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utility/validate.jsx";
 import {
+  updateProfile,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../utility/firebase.jsx";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utility/userSlice";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState(null);
   const toggleSignInForm = () => {
     setIsSignIn(!isSignIn);
@@ -36,6 +43,21 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
+          //profile update after user created
+          updateProfile(user, {
+            displayName: name.current.value,
+          })
+            .then(() => {
+              // Profile updated!
+              // ...
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(addUser({ uid, email, displayName }));
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              // ...
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -50,7 +72,9 @@ const Login = () => {
         password.current.value
       )
         .then((userCredential) => {
+          
           const user = userCredential.user;
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
