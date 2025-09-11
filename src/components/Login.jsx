@@ -8,16 +8,15 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../utility/firebase.jsx";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utility/userSlice";
+import { BACKGROUND } from "./constants.js";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState(null);
   const toggleSignInForm = () => {
@@ -52,7 +51,6 @@ const Login = () => {
               // ...
               const { uid, email, displayName } = auth.currentUser;
               dispatch(addUser({ uid, email, displayName }));
-              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
@@ -72,9 +70,7 @@ const Login = () => {
         password.current.value
       )
         .then((userCredential) => {
-          
           const user = userCredential.user;
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -92,7 +88,7 @@ const Login = () => {
       <div>
         <img
           className="w-full h-full object-cover absolute top-0 left-0"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/8d617e19-3c3c-4c28-8998-c9b14dbc7200/web/IN-en-20250901-TRIFECTA-perspective_48d84d4e-9558-46b8-a0f3-8b2dc8478431_large.jpg"
+          src={BACKGROUND}
           alt="background"
         />
       </div>
