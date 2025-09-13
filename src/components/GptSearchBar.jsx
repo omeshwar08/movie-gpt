@@ -34,15 +34,8 @@ const GptSearchBar = () => {
 
     }
     return (
-        <div className='pt-[10%] flex justify-center'>
-            <div className='-z-10'>
-                <img
-                    className="w-full h-full object-cover fixed top-0 left-0"
-                    src={BACKGROUND}
-                    alt="background"
-                />
-            </div>
-            <form className='bg-black w-1/2 grid grid-cols-12' onSubmit={(e) => e.preventDefault()}>
+        <div className='pt-[35%] md:pt-[10%] flex justify-center'>
+            <form className='bg-black w-full md:w-1/2 grid grid-cols-12' onSubmit={(e) => e.preventDefault()}>
                 <input
                     ref={searchText}
                     className='p-4 m-4 text-black bg-white col-span-9'

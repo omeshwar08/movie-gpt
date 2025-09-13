@@ -3,7 +3,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../utility/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from "../utility/userSlice";
 import { LOGO } from "./constants";
@@ -50,22 +50,22 @@ const Header = () => {
     dispatch(changeLanguage(e.target.value));
   }
   return (
-    <div className="w-full absolute px-4 py-2 bg-gradient-to-b from-black to-transparent z-10 flex justify-between items-center">
+    <div className="w-full absolute px-4 py-2 bg-gradient-to-b from-black to-transparent z-10 flex flex-col md:flex-row  justify-between items-center">
       {/* Netflix Logo */}
-      <img className="w-44" src={LOGO} alt="Netflix Logo" />
+      <img className="w-44 mx-auto md:mx-0" src={LOGO} alt="Netflix Logo" />
       {user && (
         <div>
           <select className="bg-gray-900 m-2 p-2 text-white" onChange={(e) => handleLanguageOptions(e)}>
             {SUPPORTED_LANGUAGES.map(lang => (<option key={lang.identifier} value={lang.identifier}>{lang.name}</option>))}
           </select>
           <button
-            className="font-semibold text-white bg-red-700 hover:bg-red-800 cursor-pointer px-4 py-2 rounded-md shadow-md transition duration-300 mx-4"
+            className="font-semibold text-white bg-red-700 hover:bg-red-800 cursor-pointer px-2 md:px-4 py-2 rounded-md shadow-md transition duration-300 mx-4"
             onClick={handleGptSearch}
           >
             {showGptSearch ? "Homepage" : "GPT Search"}
           </button>
           <button
-            className="font-semibold text-white bg-red-700 hover:bg-red-800 cursor-pointer px-4 py-2 rounded-md shadow-md transition duration-300"
+            className="font-semibold text-white bg-red-700 hover:bg-red-800 cursor-pointer px-2 md:px-4 py-2 rounded-md shadow-md transition duration-300"
             onClick={handleSignOut}
           >
             Sign Out
