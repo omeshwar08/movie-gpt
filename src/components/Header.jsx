@@ -3,7 +3,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../utility/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { addUser, removeUser } from "../utility/userSlice";
 import { LOGO } from "./constants";
@@ -14,6 +14,7 @@ import { changeLanguage } from "../utility/appConfigSlice";
 const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((store) => store.user);
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch)
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -61,7 +62,7 @@ const Header = () => {
             className="font-semibold text-white bg-red-700 hover:bg-red-800 cursor-pointer px-4 py-2 rounded-md shadow-md transition duration-300 mx-4"
             onClick={handleGptSearch}
           >
-            GPT Search
+            {showGptSearch ? "Homepage" : "GPT Search"}
           </button>
           <button
             className="font-semibold text-white bg-red-700 hover:bg-red-800 cursor-pointer px-4 py-2 rounded-md shadow-md transition duration-300"

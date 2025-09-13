@@ -4,7 +4,7 @@ export const API_OPTIONS = {
     method: 'GET',
     headers: {
         accept: 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMjcxOGU2ZDNiMTVkMzZkMGZkYTBkMDI4OTBiZjE2ZSIsIm5iZiI6MTc1NzUwODY1My4yMzksInN1YiI6IjY4YzE3NDJkMTk2YzE2NDEyMzk4Y2RmNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.heaHo0evj3JyikiAroWXAeiJt8woQx4GBeBaoMERlWw'
+        Authorization: 'Bearer ' + import.meta.env.VITE_TMDB_KEY
     }
 };
 export const IMG_CDN_URL = "https://image.tmdb.org/t/p/w500"
@@ -13,3 +13,6 @@ export const SUPPORTED_LANGUAGES = [
     { identifier: "hindi", name: "Hindi" },
     { identifier: "japanese", name: "Japanese" },
 ]
+
+// For Vite projects, use import.meta.env; for Create React App, use process.env
+export const OPEN_AI_KEY = import.meta.env.VITE_OPENAI_KEY;

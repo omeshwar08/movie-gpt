@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const appConfigSlice = createSlice({
     name: "appConfig",
     initialState: {
-        language: "english"
+        language: "en"
     },
     reducers: {
         changeLanguage: (state, action) => {
